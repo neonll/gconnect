@@ -1,0 +1,175 @@
+openapi: 3.0.3
+info:
+  title: GarminConnect API
+  version: 1.0.0
+  description: API for authenticating and interacting with Garmin Connect using Flask.
+servers:
+  - url: http://localhost:5000/
+    description: Local development server
+paths:
+  /auth:
+    post:
+      summary: Authenticate and get a token
+      operationId: authenticate
+      requestBody:
+        description: User credentials for authentication
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@example.com
+                password:
+                  type: string
+                  example: "password123"
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "base64encodedtoken"
+        '400':
+          description: Missing email or password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Email and password are required"
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Authentication failed"
+  /activities/latest:
+    get:
+      summary: Get the latest activity
+      operationId: getLatestActivity
+      parameters:
+        - name: Authorization
+          in: header
+          description: Bearer token for authentication
+          required: true
+          schema:
+            type: string
+            example: Bearer base64encodedtoken
+      responses:
+        '200':
+          description: Latest activity details
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  activityId: 1234567890
+                  activityName: "Obfuscated Running"
+                  activityTrainingLoad: 74.68
+                  activityType:
+                    isHidden: false
+                    parentTypeId: 17
+                    restricted: false
+                    trimmable: true
+                    typeId: 1
+                    typeKey: "running"
+                  aerobicTrainingEffect: 2.9
+                  anaerobicTrainingEffect: 0.0
+                  averageHR: 145.0
+                  calories: 456.0
+                  distance: 6416.63
+                  duration: 2102.45
+                  endLatitude: "REDACTED"
+                  endLongitude: "REDACTED"
+                  startLatitude: "REDACTED"
+                  startLongitude: "REDACTED"
+                  ownerFullName: "User123"
+                  ownerDisplayName: "User5678"
+                  startTimeGMT: "2025-05-29 17:09:31"
+                  startTimeLocal: "2025-05-29 19:09:31"
+                  steps: 5882
+                  vO2MaxValue: 55.0
+        '401':
+          description: Invalid or missing token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid or expired token"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Error retrieving the latest activity"
+  /activities:
+    get:
+      summary: Get a list of activities
+      operationId: getActivities
+      parameters:
+        - name: Authorization
+          in: header
+          description: Bearer token for authentication
+          required: true
+          schema:
+            type: string
+            example: Bearer base64encodedtoken
+        - name: num
+          in: query
+          description: Number of activities to fetch
+          required: false
+          schema:
+            type: integer
+            example: 5
+      responses:
+        '200':
+          description: List of activities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '401':
+          description: Invalid or missing token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid or expired token"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Error fetching activities"
