@@ -1,0 +1,262 @@
+openapi: 3.0.3
+info:
+  title: GarminConnect API
+  version: 1.0.0
+  description: API for authenticating and interacting with Garmin Connect using Flask.
+  contact:
+    name: API Support
+    email: support@example.com
+servers:
+  - url: http://localhost:5000/
+    description: Local development server
+paths:
+  /auth:
+    post:
+      summary: Authenticate and get a token
+      operationId: authenticate
+      tags:
+        - Authentication
+      requestBody:
+        description: User credentials for authentication
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@example.com
+                password:
+                  type: string
+                  example: "password123"
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "base64encodedtoken"
+        '400':
+          description: Missing email or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /activities/latest:
+    get:
+      summary: Get the latest activity
+      operationId: getLatestActivity
+      tags:
+        - Activities
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationHeader'
+      responses:
+        '200':
+          description: Latest activity details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activity'
+        '401':
+          description: Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /activities:
+    get:
+      summary: Get a list of activities
+      operationId: getActivities
+      tags:
+        - Activities
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationHeader'
+        - name: num
+          in: query
+          description: Number of activities to fetch
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+            example: 5
+      responses:
+        '200':
+          description: List of activities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activity'
+        '400':
+          description: Invalid parameter format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /health:
+    get:
+      summary: Health check endpoint
+      operationId: healthCheck
+      tags:
+        - System
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+
+components:
+  parameters:
+    AuthorizationHeader:
+      name: Authorization
+      in: header
+      description: Bearer token for authentication
+      required: true
+      schema:
+        type: string
+        example: Bearer base64encodedtoken
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: "An error occurred"
+      required:
+        - error
+
+    ActivityType:
+      type: object
+      properties:
+        isHidden:
+          type: boolean
+          example: false
+        parentTypeId:
+          type: integer
+          example: 17
+        restricted:
+          type: boolean
+          example: false
+        trimmable:
+          type: boolean
+          example: true
+        typeId:
+          type: integer
+          example: 1
+        typeKey:
+          type: string
+          example: "running"
+
+    Activity:
+      type: object
+      properties:
+        activityId:
+          type: integer
+          format: int64
+          example: 1234567890
+        activityName:
+          type: string
+          example: "Obfuscated Running"
+        activityTrainingLoad:
+          type: number
+          format: float
+          example: 74.68
+        activityType:
+          $ref: '#/components/schemas/ActivityType'
+        aerobicTrainingEffect:
+          type: number
+          format: float
+          example: 2.9
+        anaerobicTrainingEffect:
+          type: number
+          format: float
+          example: 0.0
+        averageHR:
+          type: number
+          format: float
+          example: 145.0
+        calories:
+          type: number
+          format: float
+          example: 456.0
+        distance:
+          type: number
+          format: float
+          example: 6416.63
+        duration:
+          type: number
+          format: float
+          example: 2102.45
+        endLatitude:
+          type: string
+          example: "REDACTED"
+        endLongitude:
+          type: string
+          example: "REDACTED"
+        startLatitude:
+          type: string
+          example: "REDACTED"
+        startLongitude:
+          type: string
+          example: "REDACTED"
+        ownerFullName:
+          type: string
+          example: "User123"
+        ownerDisplayName:
+          type: string
+          example: "User5678"
+        startTimeGMT:
+          type: string
+          example: "2025-05-29 17:09:31"
+        startTimeLocal:
+          type: string
+          example: "2025-05-29 19:09:31"
+        steps:
+          type: integer
+          example: 5882
+        vO2MaxValue:
+          type: number
+          format: float
+          example: 55.0
