@@ -18,9 +18,9 @@ This project enables developers and fitness enthusiasts to access their Garmin f
 - Modern web browser (for frontend access)
 
 For local development:
-- Python 3.9+ (backend)
-- Node.js 14+ (frontend)
-- npm 6+ (frontend)
+- Python 3.13+ (backend)
+- Node.js 18+ (frontend)
+- npm 10+ (frontend)
 
 ## Directory Structure
 
@@ -54,7 +54,7 @@ gconnect/
 
 2. Start the Docker stack:
    ```bash
-   docker-compose up --build
+   docker compose up --build
    ```
 
 3. Access the application:
@@ -66,7 +66,7 @@ gconnect/
 For production environments:
 
 ```bash
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
 ```
 
 ### Local Development
@@ -141,6 +141,27 @@ npm run lint
 cd backend
 pip-audit
 ```
+
+## Continuous Integration
+
+The project includes a comprehensive CI/CD pipeline using GitHub Actions that automatically:
+
+- **Backend Testing**: Runs on Python 3.13
+  - Code linting with flake8
+  - Code formatting validation with black
+  - Unit tests with pytest and coverage reporting
+  - Security vulnerability scanning with pip-audit
+
+- **Frontend Testing**: Runs on Node.js 18
+  - Code linting with ESLint
+  - Unit tests with Jest (when present)
+  - Build validation
+
+- **Docker Integration Testing**: 
+  - Builds Docker images for both frontend and backend
+  - Tests the complete Docker stack with health checks
+
+The CI pipeline ensures code quality and prevents regressions before merging changes.
 
 ## Contributing
 
