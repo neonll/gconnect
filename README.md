@@ -1,5 +1,11 @@
 # GConnect - Garmin Connect API & Dashboard
 
+[![CI](https://github.com/adenisov/gconnect/actions/workflows/ci.yml/badge.svg)](https://github.com/adenisov/gconnect/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/Python-3.13+-blue.svg)](https://python.org)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://docker.com)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.md)
+
 A full-stack application that provides a RESTful API wrapper for Garmin Connect services and a modern React-based dashboard for visualizing fitness activity data.
 
 ## Project Overview
