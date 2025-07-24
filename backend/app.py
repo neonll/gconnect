@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from garminconnect import Garmin, GarminConnectAuthenticationError
+from garmin_client import GarminClient, GarminConnectAuthenticationError
 from flask_cors import CORS
 import base64
 import json
@@ -28,7 +28,7 @@ active_tokens = {}
 def init_api_reuse(email, password):
     """Modified init_api function without saving files or MFA"""
     try:
-        garmin = Garmin(email=email, password=password)
+        garmin = GarminClient(email=email, password=password)
         garmin.login()  # Login without MFA
         return garmin
     except GarminConnectAuthenticationError as e:
@@ -47,7 +47,7 @@ def login_with_token(header):
             return None
 
         tokenstore = header.replace("Bearer ", "", 1)
-        garmin = Garmin()
+        garmin = GarminClient()
         garmin.login(tokenstore)
         return garmin
     except Exception as e:

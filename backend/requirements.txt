@@ -1,5 +1,5 @@
 Flask>=2.3.3
-garminconnect>=0.2.8
+garth==0.5.15
 Flask-CORS>=3.0.10
 pytest>=7.3.1
 pytest-cov>=4.1.0
