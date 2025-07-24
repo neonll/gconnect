@@ -32,15 +32,9 @@ class GarminClient:
         self.return_on_mfa = return_on_mfa
 
         # API endpoints
-        self.garmin_connect_user_settings_url = (
-            "/userprofile-service/userprofile/user-settings"
-        )
-        self.garmin_connect_daily_summary_url = (
-            "/usersummary-service/usersummary/daily"
-        )
-        self.garmin_connect_activities = (
-            "/activitylist-service/activities/search/activities"
-        )
+        self.garmin_connect_user_settings_url = "/userprofile-service/userprofile/user-settings"
+        self.garmin_connect_daily_summary_url = "/usersummary-service/usersummary/daily"
+        self.garmin_connect_activities = "/activitylist-service/activities/search/activities"
 
         # Initialize garth client
         self.garth = garth.Client(
@@ -74,9 +68,7 @@ class GarminClient:
             self.display_name = self.garth.profile["displayName"]
             self.full_name = self.garth.profile["fullName"]
 
-            settings = self.garth.connectapi(
-                self.garmin_connect_user_settings_url
-            )
+            settings = self.garth.connectapi(self.garmin_connect_user_settings_url)
             self.unit_system = settings["userData"]["measurementSystem"]
 
             return None, None
@@ -94,9 +86,7 @@ class GarminClient:
                 self.display_name = self.garth.profile["displayName"]
                 self.full_name = self.garth.profile["fullName"]
 
-                settings = self.garth.connectapi(
-                    self.garmin_connect_user_settings_url
-                )
+                settings = self.garth.connectapi(self.garmin_connect_user_settings_url)
                 self.unit_system = settings["userData"]["measurementSystem"]
 
         return token1, token2
