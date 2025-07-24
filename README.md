@@ -1,6 +1,6 @@
 # GConnect - Garmin Connect API & Dashboard
 
-[![CI](https://github.com/adenisov/gconnect/actions/workflows/ci.yml/badge.svg)](https://github.com/adenisov/gconnect/actions/workflows/ci.yml)
+[![CI](https://github.com/neonll/gconnect/actions/workflows/ci.yml/badge.svg)](https://github.com/neonll/gconnect/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/Python-3.13+-blue.svg)](https://python.org)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://docker.com)
