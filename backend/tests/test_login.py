@@ -10,7 +10,7 @@ from app import init_api_reuse, login_with_token
 
 
 class TestLogin(unittest.TestCase):
-    @patch("app.Garmin")
+    @patch("app.GarminClient")
     def test_init_api_reuse_success(self, mock_garmin_class):
         # Setup mock
         mock_garmin_instance = MagicMock()
@@ -24,7 +24,7 @@ class TestLogin(unittest.TestCase):
         mock_garmin_instance.login.assert_called_once()
         self.assertEqual(result, mock_garmin_instance)
 
-    @patch("app.Garmin")
+    @patch("app.GarminClient")
     def test_init_api_reuse_auth_error(self, mock_garmin_class):
         # Setup mock to raise authentication error
         mock_garmin_instance = MagicMock()
@@ -37,7 +37,7 @@ class TestLogin(unittest.TestCase):
         # Assertions
         self.assertIsNone(result)
 
-    @patch("app.Garmin")
+    @patch("app.GarminClient")
     def test_login_with_token_success(self, mock_garmin_class):
         # Setup mock
         mock_garmin_instance = MagicMock()
@@ -51,7 +51,7 @@ class TestLogin(unittest.TestCase):
         mock_garmin_instance.login.assert_called_once_with("test_token_123")
         self.assertEqual(result, mock_garmin_instance)
 
-    @patch("app.Garmin")
+    @patch("app.GarminClient")
     def test_login_with_token_error(self, mock_garmin_class):
         # Setup mock to raise error
         mock_garmin_instance = MagicMock()
